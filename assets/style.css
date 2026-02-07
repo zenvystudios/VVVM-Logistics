@@ -1854,15 +1854,119 @@ html.brand-mode .brand-pulse {
     }
 }
 
+#calculator {
+    display: flex;
+    flex-wrap: wrap;          /* Allows wrapping on smaller screens */
+    justify-content: center;  /* Centers both containers horizontally */
+    align-items: center;  /* Keeps both aligned at the top */
+    padding: 50px 20px;       /* Adds some breathing room */
+}
+
+#calculator .container {
+    flex: 1;                  /* Allows containers to grow/shrink equally */
+    min-width: 350px;         /* Prevents them from getting too skinny */
+    max-width: 600px;         /* Limits how wide they can get */
+}
+
+/* Optional: Adjust features-grid to look better in a side-column */
+.features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Keeps features in 2 columns inside the right side */
+    gap: 20px;
+}
+
+
+/* Responsive: Stack vertically on mobile */
+@media (max-width: 850px) {
+    #calculator {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #calculator .container {
+        width: 100%;
+    }
+}
 
 
 
+.faq-section {
+    padding: 80px 20px;
+    background-color: var(--color-background);
+    color: var(--color-text-primary)
+}
 
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+}
 
+.faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
+/* The Box */
+.faq-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
 
+/* The Question Bar */
+.faq-item summary {
+    padding: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none; /* Removes the default arrow */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+/* Custom Arrow using ::after */
+.faq-item summary::after {
+    content: '＋';
+    font-size: 1.2rem;
+    color: #00a8ff; /* Your theme's blue */
+    transition: transform 0.3s ease;
+}
 
+/* Change icon when open */
+.faq-item[open] summary::after {
+    content: '－';
+    transform: rotate(180deg);
+}
+
+/* The Answer Text */
+.faq-item p {
+    padding: 0 20px 20px 20px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0;
+}
+
+/* Hover Effect */
+.faq-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #00a8ff;
+}
+
+details[open] p {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 
 
