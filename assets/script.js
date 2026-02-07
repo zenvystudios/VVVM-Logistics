@@ -305,92 +305,6 @@ function initAboutCounters() {
   });
 }
 
-
-
-
-/* ===============================
-   GSAP PREMIUM FLEET FILTER
-   Flip-based | Mobile Optimized
-================================ */
-
-gsap.registerPlugin(Flip);
-
-const filterButtons = document.querySelectorAll(".filter-btn");
-const fleetGrid = document.querySelector(".fleet-grid");
-const fleetItems = gsap.utils.toArray(".fleet-item");
-
-/* 🔹 Initial entrance animation */
-gsap.from(fleetItems, {
-  scrollTrigger: {
-    trigger: fleetGrid,
-    start: "top 80%",
-  },
-  y: 40,
-  autoAlpha: 0,
-  stagger: 0.08,
-  duration: 0.6,
-  ease: "power3.out",
-});
-
-/* 🔹 Filter click logic */
-filterButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    if (btn.classList.contains("active")) return;
-
-    /* UI state */
-    filterButtons.forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-
-    const filter = btn.dataset.filter;
-
-    /* Capture current layout */
-    const state = Flip.getState(fleetItems);
-
-    /* Show / hide items (NO display:block) */
-    fleetItems.forEach((item) => {
-      const category = item.dataset.category;
-
-      if (filter === "all" || category === filter) {
-        item.style.display = ""; // restore CSS grid behavior
-      } else {
-        item.style.display = "none";
-      }
-    });
-
-    /* Animate layout change */
-    Flip.from(state, {
-      duration: 0.6,
-      ease: "power3.inOut",
-      stagger: 0.05,
-      absolute: false,
-      onEnter: (elements) =>
-        gsap.fromTo(
-          elements,
-          { autoAlpha: 0, scale: 0.95 },
-          { autoAlpha: 1, scale: 1, duration: 0.4, ease: "power2.out" }
-        ),
-      onLeave: (elements) =>
-        gsap.to(elements, {
-          autoAlpha: 0,
-          scale: 0.95,
-          duration: 0.3,
-          ease: "power2.in",
-        }),
-    });
-  });
-});
-
-/* 🔹 Mobile tap optimization */
-if ("ontouchstart" in window) {
-  filterButtons.forEach((btn) => {
-    btn.addEventListener("touchstart", () => {
-      btn.classList.add("tap");
-      setTimeout(() => btn.classList.remove("tap"), 150);
-    });
-  });
-}
-
-
         // ========================================
         // FORM HANDLING & TOAST
         // ========================================
@@ -514,7 +428,7 @@ window.addEventListener("load", () => {
 
     ScrollTrigger.create({
       trigger: section,
-      start: "top+=120 top",     // accounts for fixed navbar
+      start: "top+=120 top",
       end: "bottom-=120 top",
       onEnter: () => activate(link),
       onEnterBack: () => activate(link)
@@ -526,7 +440,6 @@ window.addEventListener("load", () => {
     activeLink.classList.add("is-active");
   }
 
-  // Force recalculation after animations & loader
   ScrollTrigger.refresh();
 });
 
