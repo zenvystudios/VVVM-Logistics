@@ -143,3 +143,16 @@ If you implement even **40–50% of this list**, your site will:
 ✔ Convert better than most competitors
 ✔ Be future-proof for portals, AI, and automation
 ✔ Stand out massively in Indian logistics space
+
+
+
+---------------------------------------
+
+bugs
+
+ The Issue: Your JS tries to select an element with ID brandToggle, but this ID does not exist in your HTML (you only have themeToggle).
+The Fix: Add a specific button for "Brand Mode" in the HTML, or update the JS to cycle through modes using the existing button. I recommend adding a dedicated Brand Mode toggle for better UX.
+
+---
+
+

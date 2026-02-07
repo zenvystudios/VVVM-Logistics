@@ -12,6 +12,10 @@
     <meta name="geo.region" content="IN-TN">
     <meta name="geo.placename" content="Chennai, Tamil Nadu">
     <meta name="geo.position" content="13.1323;80.1986">
+    <meta property="og:image" content="https://picsum.photos/seed/vvvmlogistics/1200/630">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="VVVM Logistics - Moving What Matters | Chennai">
@@ -45,22 +49,51 @@
         "openingHours": "Mo-Su 00:00-24:00"
     }
     </script>
+
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+        "@type": "Question",
+        "name": "Do you provide insurance for goods?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we offer comprehensive transit insurance for all types of cargo."
+        }
+    }, {
+        "@type": "Question",
+        "name": "What areas do you cover?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We provide full truck load services across Tamil Nadu and major connectivity hubs throughout India."
+        }
+    }]
+    }
+    </script>
     
     <title>VVVM Logistics - Moving What Matters | Freight Forwarding & Transport Services Chennai</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">   
     
     <!-- Stylesheet -->
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="manifest" href="manifest.json">
 
     
 </head>
 <body>
 
     <div class="scroll-progress" id="scrollProgress"></div>
+
+    <noscript>
+        <div class="no-js-message">
+            For the best experience, please enable JavaScript. VVVM Logistics requires JS for animations and tracking features.
+        </div>
+    </noscript>
 
     <!-- Preloader -->
     <div class="loader" id="loader">
@@ -163,6 +196,10 @@
         <div class="hero-content">
             <span class="hero-badge">#1 Logistics Partner in Chennai</span>
             <h1 class="hero-title">Moving What Matters<span>Seamlessly & Securely</span></h1>
+            <div class="tracking-widget">
+                <input type="text" placeholder="Enter Tracking ID (e.g., VVVM-1234)" class="tracking-input">
+                <button class="tracking-btn">Track</button>
+            </div>
             <p class="hero-description">Experience the future of logistics with real-time tracking, 24/7 support, and a dedicated team committed to your supply chain success.</p>
             <div class="hero-buttons">
                 <a href="#enquiry" class="cta-button magnetic">Get a Free Quote</a>
@@ -237,7 +274,7 @@
                         </svg>
                     </div>
                     <h3>Freight Forwarding</h3>
-                    <p>Seamless domestic freight with documentation support.</p>
+                    <p>Seamless domestic freight with documentation.</p>
                 </div>
 
                 <div class="service-card">
@@ -298,7 +335,7 @@
                 <article class="fleet-item" data-category="heavy">
                     <div class="fleet-image-wrapper">
                         <!-- Using Unsplash Source for free logistics images -->
-                        <img src="https://images.unsplash.com/photo-1501700493788-fa1a4fc9fe62?q=80&w=1989&auto=format&fit=crop&q=80&w=800" alt="Heavy Duty Truck on Highway">
+                        <img src="https://images.unsplash.com/photo-1501700493788-fa1a4fc9fe62?q=80&w=1989&auto=format&fit=crop&q=80&w=800" alt="Heavy Duty Truck on Highway" width="800" height="600" loading="lazy">
                         <div class="fleet-overlay">
                             <div class="fleet-specs">
                                 <span class="spec-item"><strong>Cap:</strong> 25 Tons</span>
@@ -316,7 +353,7 @@
 
                 <article class="fleet-item" data-category="container">
                     <div class="fleet-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1605705658744-45f0fe8f9663?q=80&w=987&auto=format&fit=crop&q=80&w=800" alt="Container Truck at Port">
+                        <img src="https://images.unsplash.com/photo-1605705658744-45f0fe8f9663?q=80&w=987&auto=format&fit=crop&q=80&w=800" alt="Container Truck at Port" width="800" height="600" loading="lazy">
                             <div class="fleet-overlay">
                                 <div class="fleet-specs">
                                     <span class="spec-item"><strong>Cap:</strong> 20-30 Tons</span>
@@ -333,7 +370,7 @@
                 <!-- Item 3: LCV -->
                 <article class="fleet-item" data-category="lcv">
                     <div class="fleet-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800" alt="Delivery Van in City">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800" alt="Delivery Van in City" width="800" height="600" loading="lazy">
                         <div class="fleet-overlay">
                             <div class="fleet-specs">
                                 <span class="spec-item"><strong>Cap:</strong> 2 Tons</span>
@@ -351,7 +388,7 @@
                 <!-- Item 4: Heavy Truck 2 -->
                 <article class="fleet-item" data-category="heavy">
                     <div class="fleet-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=800" alt="Red Truck on Road">
+                        <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=800" alt="Red Truck on Road" width="800" height="600" loading="lazy">
                         <div class="fleet-overlay">
                             <div class="fleet-specs">
                                 <span class="spec-item"><strong>Cap:</strong> 15 Tons</span>
@@ -368,7 +405,7 @@
                 <!-- Item 5: Container 2 -->
                 <article class="fleet-item" data-category="container">
                     <div class="fleet-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1557075421-ab09bb914fa6?w=900&auto=format&fit=crop&q=80&w=800" alt="Shipping Containers">
+                        <img src="https://images.unsplash.com/photo-1557075421-ab09bb914fa6?w=900&auto=format&fit=crop&q=80&w=800" alt="Shipping Containers" width="800" height="600" loading="lazy">
                         <div class="fleet-overlay">
                             <div class="fleet-specs">
                                 <span class="spec-item"><strong>Cap:</strong> 28 Tons</span>
@@ -391,7 +428,7 @@
             <div class="about-grid">
                 <div class="about-image-wrapper">
                     <!-- Using Picsum for placeholder as requested -->
-                    <img src="https://picsum.photos/seed/vvvmlogistics/600/450" alt="Warehouse Operations" class="about-image">
+                    <img src="https://picsum.photos/seed/vvvmlogistics/600/450" alt="Warehouse Operations" class="about-image" width="800" height="600" loading="lazy">
                     <div class="experience-badge">
                         <span class="experience-number">15+</span>
                         <span>Years Experience</span>
@@ -517,6 +554,102 @@
         </div>
     </section>
 
+    <section class="calculator-section" id="calculator">
+        <div class="container">
+            <div class="calculator-card">
+                <h3>Calculate Volume (CBM)</h3>
+                <p>Enter dimensions to get your estimated shipment volume.</p>
+                <div class="calc-inputs">
+                    <div class="input-group">
+                        <label>Length (cm)</label>
+                        <input type="number" id="calc-l" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Width (cm)</label>
+                        <input type="number" id="calc-w" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Height (cm)</label>
+                        <input type="number" id="calc-h" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Quantity</label>
+                        <input type="number" id="calc-q" value="1">
+                    </div>
+                </div>
+                <button id="calc-btn" class="cta-button">Calculate CBM</button>
+                <div id="calc-result" class="calc-result hidden">
+                    Total Volume: <span>0</span> CBM
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🛡️</div>
+                    <h4>Insured Cargo</h4>
+                    <p>100% coverage for all goods in transit.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⏱️</div>
+                    <h4>On-Time Delivery</h4>
+                    <p>98.5% of shipments arrive on schedule.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📍</div>
+                    <h4>Live GPS Tracking</h4>
+                    <p>Monitor your fleet 24/7 in real-time.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💬</div>
+                    <h4>24/7 Support</h4>
+                    <p>Dedicated customer care team.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>Do you provide insurance for goods?</summary>
+                    <p>Yes, we offer comprehensive transit insurance for all types of cargo to ensure risk-free transportation.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>What areas do you cover?</summary>
+                    <p>We provide full truck load services across Tamil Nadu and major connectivity hubs throughout India.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How can I track my shipment?</summary>
+                    <p>Once your shipment is dispatched, you will receive a tracking link via SMS and Email.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <div class="logo-marquee">
+        <div class="marquee-content">
+            <!-- Duplicate these items for seamless loop -->
+            <span class="partner-logo">TATA STEEL</span>
+            <span class="partner-logo">L&T CONSTRUCTION</span>
+            <span class="partner-logo">MAHINDRA</span>
+            <span class="partner-logo">ASHOK LEYLAND</span>
+            <span class="partner-logo">RELIANCE</span>
+            <span class="partner-logo">TI CYCLES</span>
+            <span class="partner-logo">TATA STEEL</span>
+            <span class="partner-logo">L&T CONSTRUCTION</span>
+            <span class="partner-logo">MAHINDRA</span>
+            <span class="partner-logo">ASHOK LEYLAND</span>
+            <span class="partner-logo">RELIANCE</span>
+            <span class="partner-logo">TI CYCLES</span>
+        </div>
+    </div>
+    
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -602,11 +735,35 @@
         </div>
     </div>
 
+    <div id="exit-popup" class="exit-popup">
+        <div class="popup-content">
+            <button class="close-popup">&times;</button>
+            <h3>Wait! Don't leave yet.</h3>
+            <p>Get a <strong>5% Discount</strong> on your first inter-state transport.</p>
+            <p>Use Code: <span class="coupon-code">VVVM5</span></p>
+            <a href="#enquiry" class="cta-button popup-cta">Claim Offer</a>
+        </div>
+    </div>
+
     <!-- nav preview -->
 
     <div class="nav-preview" id="navPreview">
     <img src="" alt="Section preview" />
     </div>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/6987350ba984a31c3679fe74/1jgs2ee1g';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
 
     <!-- GSAP Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

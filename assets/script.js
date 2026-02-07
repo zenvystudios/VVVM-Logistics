@@ -1,426 +1,350 @@
+// ========================================
+// GLOBALS
+// ========================================
+const html = document.documentElement;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
-        // ========================================
-        // PRELOADER
-        // ========================================
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            setTimeout(() => {
-                loader.classList.add('hidden');
-                initHeroAnimations();
-                initAboutCounters();
+// Immediately signal that JS is working
+document.documentElement.classList.add('js-loaded');
 
-                setTimeout(() => {
-                  ScrollTrigger.refresh();
-                }, 200);
-            }, 1000);
-        });
-
-        // ========================================
-        // REDUCED MOTION DETECTION
-        // ========================================
-        const prefersReducedMotion = window.matchMedia(
-        '(prefers-reduced-motion: reduce)'
-        ).matches;
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.documentElement.classList.add('brand-mode');
+// ========================================
+// PRELOADER
+// ========================================
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
+  if (loader) {
+    setTimeout(() => {
+      loader.classList.add('hidden');
+      ScrollTrigger.refresh();
+    }, 1000);
+  }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const html = document.documentElement;
+// ========================================
+// THEME & BRAND MODE
+// ========================================
+(function initTheme() {
+  const THEME_KEY = 'vvvm-theme';
+  const BRAND_KEY = 'brand-mode';
 
-  // Restore saved brand mode
-  const brandMode = localStorage.getItem('brand-mode');
-  if (brandMode === 'on') {
-    html.classList.add('brand-mode');
+  // Restore theme
+  const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
+  html.setAttribute('data-theme', savedTheme);
+
+  // Restore brand mode
+  if (localStorage.getItem(BRAND_KEY) === 'on') html.classList.add('brand-mode');
+
+  // Theme toggle
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    const icon = themeToggle.querySelector('svg');
+
+    themeToggle.addEventListener('click', () => {
+      const THEMES = ['light', 'dark', 'brand'];
+      const currentTheme = html.getAttribute('data-theme');
+      const nextTheme = THEMES[(THEMES.indexOf(currentTheme) + 1) % THEMES.length];
+
+      html.setAttribute('data-theme', nextTheme);
+      localStorage.setItem(THEME_KEY, nextTheme);
+      updateIcon(nextTheme, icon);
+
+      // Micro-feedback
+      html.animate([{ opacity: 0.92 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' });
+    });
+
+    // Initial icon
+    updateIcon(savedTheme, icon);
   }
 
-  // Example toggle button
+  // Brand mode toggle
   const brandToggle = document.getElementById('brandToggle');
-  if (!brandToggle) return;
+  if (brandToggle) {
+    brandToggle.addEventListener('click', () => {
+      html.classList.toggle('brand-mode');
+      localStorage.setItem(BRAND_KEY, html.classList.contains('brand-mode') ? 'on' : 'off');
+    });
+  }
 
-  brandToggle.addEventListener('click', () => {
-    html.classList.toggle('brand-mode');
-
-    localStorage.setItem(
-      'brand-mode',
-      html.classList.contains('brand-mode') ? 'on' : 'off'
-    );
-  });
-});
-
-        
-// ========================================
-// THEME TOGGLE — LIGHT / DARK / BRAND
-// ========================================
-
-const themeToggle = document.getElementById('themeToggle');
-const html = document.documentElement;
-const icon = themeToggle.querySelector('svg');
-
-const THEMES = ['light', 'dark', 'brand'];
-
-// Load saved theme
-const savedTheme = localStorage.getItem('theme') || 'light';
-html.setAttribute('data-theme', savedTheme);
-updateIcon(savedTheme);
-
-// Toggle handler
-themeToggle.addEventListener('click', () => {
-    const currentTheme = html.getAttribute('data-theme');
-    const currentIndex = THEMES.indexOf(currentTheme);
-    const nextTheme = THEMES[(currentIndex + 1) % THEMES.length];
-
-    html.setAttribute('data-theme', nextTheme);
-    localStorage.setItem('theme', nextTheme);
-    updateIcon(nextTheme);
-
-    // Micro interaction feedback
-    html.animate(
-        [{ opacity: 0.92 }, { opacity: 1 }],
-        { duration: 220, easing: 'ease-out' }
-    );
-});
-
-// Icon updater
-function updateIcon(theme) {
+  function updateIcon(theme, icon) {
+    if (!icon) return;
     if (theme === 'dark') {
-        // ☀ Sun (Dark Mode Indicator)
-        icon.innerHTML = `
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        `;
-    } 
-    else if (theme === 'brand') {
-        // ◼ Brand Mode — Command / Ops Icon
-        icon.innerHTML = `
-            <rect x="3" y="3" width="18" height="18" rx="4"></rect>
-            <path d="M7 12h10"></path>
-            <path d="M12 7v10"></path>
-        `;
-    } 
-    else {
-        // 🌙 Moon (Light Mode Indicator)
-        icon.innerHTML = `
-            <path d="M21 12.79A9 9 0 1 1 11.21 3
-                     7 7 0 0 0 21 12.79z"></path>
-        `;
+      icon.innerHTML = `
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      `;
+    } else if (theme === 'brand') {
+      icon.innerHTML = `
+        <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+        <path d="M7 12h10"></path>
+        <path d="M12 7v10"></path>
+      `;
+    } else {
+      icon.innerHTML = `
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      `;
     }
-}
-
-
-        // ========================================
-        // NAVBAR & MOBILE MENU
-        // ========================================
-        const navbar = document.getElementById('navbar');
-        const mobileToggle = document.getElementById('mobileMenuToggle');
-        const navMenu = document.getElementById('navMenu');
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-            
-            // Back to top visibility
-            const backToTop = document.getElementById('backToTop');
-            if (window.scrollY > 300) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
-
-        mobileToggle.addEventListener('click', () => {
-            mobileToggle.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            });
-        });
-
-        document.getElementById('backToTop').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // ========================================
-        // GSAP ANIMATIONS
-        // ========================================
-        gsap.registerPlugin(ScrollTrigger);
-
-        function initHeroAnimations() {
-
-            if (prefersReducedMotion) {
-                gsap.set('.hero-content > *', { autoAlpha: 1, y: 0 });
-                return;
-            }
-
-            // Hero Text Fade In
-            gsap.from('.hero-content > *', {
-                y: 30,
-                autoAlpha: 0,
-                duration: 1,
-                stagger: 0.2,
-                ease: 'power3.out'
-            });
-
-            // Truck Drive Animation
-            gsap.fromTo('#heroTruck', 
-                { left: '-20%' },
-                { 
-                    left: '80%', 
-                    duration: 8, 
-                    ease: 'none', 
-                    repeat: -1,
-                    delay: 0.5 
-                }
-            );
-        }
-
-        // Process Timeline Animation
-        gsap.utils.toArray('.timeline-item').forEach((item, i) => {
-            gsap.from(item, {
-                scrollTrigger: {
-                    trigger: item,
-                    start: 'top 85%',
-                    toggleActions: 'play none none reverse'
-                },
-                y: 50,
-                autoAlpha: 0,
-                duration: 0.8,
-                delay: i * 0.2
-            });
-        });
-
-        // Service Cards Stagger
-        gsap.from('.service-card', {
-            scrollTrigger: {
-                trigger: '.services-grid',
-                start: 'top 85%', // Triggers a bit earlier (higher up) to be safe
-                toggleActions: "play none none reverse" // Allows replay if scrolling up
-            },
-            y: 50,
-            autoAlpha: 0, // Better than autoAlpha: 0 (handles visibility: hidden too)
-            duration: 0.8,
-            stagger: 0.1,
-            ease: "power2.out",
-            onComplete: () => {
-                // Fallback: Force them visible if animation glitches
-                gsap.set('.service-card', { autoAlpha: 1, y: 0 });
-            }
-        });
-
-        // FORCE REFRESH: Call this after window load to fix layout shift issues
-        window.addEventListener('load', () => {
-            ScrollTrigger.refresh();
-        });
+  }
+})();
 
 // ========================================
-// ABOUT SECTION — BULLETPROOF GSAP
+// NAVBAR & MOBILE MENU
 // ========================================
+(function initNavbar() {
+  const navbar = document.getElementById('navbar');
+  const mobileToggle = document.getElementById('mobileMenuToggle');
+  const navMenu = document.getElementById('navMenu');
+  const backToTop = document.getElementById('backToTop');
 
-window.addEventListener("load", () => {
-  const aboutSection = document.querySelector(".about-grid");
-  if (!aboutSection) return;
-
-  const image = aboutSection.querySelector(".about-image-wrapper");
-  const content = aboutSection.querySelector(".about-content");
-
-  // 🔑 SAFETY: Ensure visible before ScrollTrigger
-  gsap.set([image, content], { autoAlpha: 1, x: 0 });
-
-  ScrollTrigger.create({
-    trigger: aboutSection,
-    start: "top 80%",
-    once: true,
-    onEnter: () => {
-      gsap.from(image, {
-        x: -60,
-        autoAlpha: 0,
-        duration: 0.9,
-        ease: "power3.out"
-      });
-
-      gsap.from(content, {
-        x: 60,
-        autoAlpha: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        delay: 0.15
-      });
-    }
+  window.addEventListener('scroll', () => {
+    if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
+    if (backToTop) backToTop.classList.toggle('visible', window.scrollY > 300);
   });
-});
+
+  if (mobileToggle && navMenu) {
+    mobileToggle.addEventListener('click', () => {
+      mobileToggle.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+      });
+    });
+  }
+
+  if (backToTop) {
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+})();
+
+// ========================================
+// SCROLL PROGRESS BAR
+// ========================================
+(function initScrollProgress() {
+  const scrollProgress = document.getElementById('scrollProgress');
+  if (!scrollProgress) return;
+
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    scrollProgress.style.width = `${progress}%`;
+    scrollProgress.classList.add('is-visible');
+
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => scrollProgress.classList.remove('is-visible'), 600);
+  }, { passive: true });
+})();
 
 
 // ========================================
-// ABOUT STATS COUNTER — SCROLL-SAFE
+// PREMIUM FLOATING PARALLAX ANIMATIONS
 // ========================================
-
-function initAboutCounters() {
+function initPremiumAnimations() {
   gsap.registerPlugin(ScrollTrigger);
 
-  const stats = document.querySelectorAll(".stat-number");
-  if (!stats.length) return;
+  // =======================
+  // Hero Section Floating
+  // =======================
+  const heroContent = document.querySelector('.hero-content');
+  const heroButtons = document.querySelectorAll('.hero-content .cta-button');
+  const heroTruck = document.getElementById('heroTruck');
+  const heroImage = document.querySelector('.hero-image'); // optional image wrapper
 
-  stats.forEach((stat, index) => {
+  if (heroContent && !prefersReducedMotion) {
+    // Hero content fade-in with stagger
+    gsap.from(heroContent.children, {
+      y: 40,
+      autoAlpha: 0,
+      duration: 1.2,
+      stagger: 0.25,
+      ease: 'power3.out'
+    });
+
+    // Hero buttons floating slightly
+    heroButtons.forEach(btn => {
+      gsap.fromTo(btn, 
+        { y: 0 }, 
+        { 
+          y: -6, 
+          duration: 2.5, 
+          repeat: -1, 
+          yoyo: true, 
+          ease: "sine.inOut", 
+          delay: Math.random() * 0.5
+        }
+      );
+    });
+
+    // Hero text parallax on scroll
+    gsap.to(heroContent, {
+      y: -40,
+      ease: "none",
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 0.6
+      }
+    });
+
+    // Optional hero image floating slightly
+    if (heroImage) {
+      gsap.to(heroImage, {
+        y: -20,
+        rotation: 0.5,
+        ease: "sine.inOut",
+        scrollTrigger: {
+          trigger: '.hero-section',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.6
+        }
+      });
+    }
+
+    // Truck drives across screen continuously
+    if (heroTruck) {
+      gsap.fromTo(heroTruck, 
+        { left: '-20%' }, 
+        { 
+          left: '80%', 
+          duration: 10, 
+          ease: 'linear', 
+          repeat: -1 
+        }
+      );
+    }
+  }
+
+  // =======================
+  // About Section
+  // =======================
+  const aboutSection = document.querySelector(".about-grid");
+  if (aboutSection) {
+    const image = aboutSection.querySelector(".about-image-wrapper");
+    const content = aboutSection.querySelector(".about-content");
+
+    gsap.set([image, content], { autoAlpha: 1, x: 0 });
+
+    ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "top 80%",
+      once: true,
+      onEnter: () => {
+        gsap.from(image, { x: -60, autoAlpha: 0, duration: 1, ease: "power3.out" });
+        gsap.from(content, { x: 60, autoAlpha: 0, duration: 1, ease: "power3.out", delay: 0.2 });
+      }
+    });
+
+    // Floating subtle parallax on scroll
+    gsap.to(image, {
+      y: -15,
+      scrollTrigger: {
+        trigger: aboutSection,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 0.4
+      }
+    });
+    gsap.to(content, {
+      y: -10,
+      scrollTrigger: {
+        trigger: aboutSection,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 0.4
+      }
+    });
+  }
+
+  // =======================
+  // About Stats Counter
+  // =======================
+  const stats = document.querySelectorAll(".stat-number");
+  stats.forEach((stat, i) => {
     const target = parseInt(stat.dataset.target, 10);
-    stat.textContent = "0";
 
     ScrollTrigger.create({
       trigger: stat.closest(".about-stats") || stat,
       start: "top 80%",
       once: true,
       onEnter: () => {
-        gsap.fromTo(
-          stat,
-          { innerText: 0 },
-          {
-            innerText: target,
-            duration: 1.6,
-            ease: "power3.out",
-            snap: { innerText: 1 },
-            delay: index * 0.15,
-            onUpdate: () => {
-              stat.textContent = Math.floor(stat.innerText) + '+';
-            }
-          }
-        );
+        gsap.fromTo(stat, { innerText: 0 }, {
+          innerText: target,
+          duration: 1.6,
+          ease: "power3.out",
+          snap: { innerText: 1 },
+          delay: i * 0.2,
+          onUpdate: () => stat.textContent = Math.floor(stat.innerText) + '+'
+        });
       }
     });
   });
+
+  // =======================
+  // Timeline Items
+  // =======================
+  gsap.utils.toArray('.timeline-item').forEach((item, i) => {
+    gsap.from(item, {
+      scrollTrigger: { trigger: item, start: 'top 85%', toggleActions: 'play none none reverse' },
+      y: 50,
+      autoAlpha: 0,
+      duration: 1,
+      delay: i * 0.2,
+      ease: "power3.out"
+    });
+  });
+
+  // =======================
+  // Service Cards
+  // =======================
+  gsap.from('.service-card', {
+    scrollTrigger: { trigger: '.services-grid', start: 'top 85%', toggleActions: "play none none reverse" },
+    y: 40,
+    autoAlpha: 0,
+    duration: 0.9,
+    stagger: 0.15,
+    ease: "power4.out",
+    onComplete: () => gsap.set('.service-card', { autoAlpha: 1, y: 0 })
+  });
+
 }
 
-        // ========================================
-        // FORM HANDLING & TOAST
-        // ========================================
-        const enquiryForm = document.getElementById('enquiryForm');
-        const toast = document.getElementById('toast');
-
-        enquiryForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                service: document.getElementById('service').value,
-                message: document.getElementById('message').value
-            };
-            
-            // Show Toast
-            toast.classList.add('show');
-            
-            // Prepare WhatsApp Message
-            const msg = `*New Enquiry*%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Service:* ${formData.service}%0A*Message:* ${formData.message}`;
-            
-            setTimeout(() => {
-                window.open(`https://wa.me/919677079693?text=${msg}`, '_blank');
-                toast.classList.remove('show');
-                enquiryForm.reset();
-            }, 2000);
-        });
-
-/* ========================================
-   BRAND MODE CONTROLLER
-   ======================================== */
-
-(function () {
-    const STORAGE_KEY = 'vvvm-theme';
-
-    const root = document.documentElement;
-
-    const savedTheme = localStorage.getItem(STORAGE_KEY);
-    if (savedTheme) {
-        root.setAttribute('data-theme', savedTheme);
-    }
-
-    window.toggleBrandMode = function () {
-        const current = root.getAttribute('data-theme');
-
-        const next =
-            current === 'brand'
-                ? 'dark'
-                : current === 'dark'
-                ? 'light'
-                : 'brand';
-
-        root.setAttribute('data-theme', next);
-        localStorage.setItem(STORAGE_KEY, next);
-
-        // Micro feedback
-        root.animate(
-            [{ opacity: 0.92 }, { opacity: 1 }],
-            { duration: 220, easing: 'ease-out' }
-        );
-    };
-})();
-
-// ========================================
-// SCROLL PROGRESS INDICATOR
-// ========================================
-
-const scrollProgress = document.getElementById('scrollProgress');
-
-let scrollTimeout;
-
-function updateScrollProgress() {
-  const scrollTop = window.scrollY;
-  const docHeight =
-    document.documentElement.scrollHeight -
-    document.documentElement.clientHeight;
-
-  const progress = (scrollTop / docHeight) * 100;
-
-  scrollProgress.style.width = `${progress}%`;
-  scrollProgress.classList.add('is-visible');
-
-  clearTimeout(scrollTimeout);
-  scrollTimeout = setTimeout(() => {
-    scrollProgress.classList.remove('is-visible');
-  }, 600);
-}
-
-window.addEventListener('scroll', updateScrollProgress, { passive: true });
+// Initialize after window load
+window.addEventListener('load', () => {
+  initPremiumAnimations();
+  ScrollTrigger.refresh();
+});
 
 
 // ========================================
-// SMART NAVBAR — FIXED & STABLE
+// NAVBAR SECTION HIGHLIGHT & SHRINK
 // ========================================
-
-window.addEventListener("load", () => {
-  gsap.registerPlugin(ScrollTrigger);
-
+(function initSmartNavbar() {
   const navbar = document.getElementById("navbar");
   const navLinks = gsap.utils.toArray(".nav-link");
-
   if (!navbar || !navLinks.length) return;
 
-  /* 🔹 NAV SHRINK */
   ScrollTrigger.create({
     start: 100,
     onEnter: () => navbar.classList.add("is-shrunk"),
     onLeaveBack: () => navbar.classList.remove("is-shrunk")
   });
 
-  /* 🔹 SECTION AWARE LINKS */
   navLinks.forEach(link => {
     const id = link.getAttribute("href");
-
-    // Only allow hash links
     if (!id || !id.startsWith("#")) return;
 
     const section = document.querySelector(id);
@@ -439,100 +363,194 @@ window.addEventListener("load", () => {
     navLinks.forEach(l => l.classList.remove("is-active"));
     activeLink.classList.add("is-active");
   }
-
-  ScrollTrigger.refresh();
-});
-
-
+})();
 
 // ========================================
-// Navbar preview images on hover
+// NAVBAR IMAGE PREVIEWS
 // ========================================
-
-
-document.addEventListener("DOMContentLoaded", () => {
+(function initNavPreviews() {
   if (window.innerWidth < 1024) return;
-
   const preview = document.getElementById("navPreview");
-  const previewImg = preview.querySelector("img");
-  const navLinks = document.querySelectorAll(".nav-link[data-preview]");
+  if (!preview) return;
 
+  const previewImg = preview.querySelector("img");
   let activeTween;
 
-  navLinks.forEach(link => {
+  document.querySelectorAll(".nav-link[data-preview]").forEach(link => {
     link.addEventListener("mouseenter", () => {
-      const imgSrc = link.dataset.preview;
-      if (!imgSrc) return;
-
-      previewImg.src = imgSrc;
+      if (!link.dataset.preview) return;
+      previewImg.src = link.dataset.preview;
 
       if (activeTween) activeTween.kill();
-
       preview.classList.add("is-visible");
 
-      activeTween = gsap.to(preview, {
-        opacity: 1,
-        y: 0,
-        duration: 0.35,
-        ease: "power3.out"
-      });
+      activeTween = gsap.to(preview, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" });
     });
 
     link.addEventListener("mouseleave", () => {
       if (activeTween) activeTween.kill();
-
       preview.classList.remove("is-visible");
-
-      activeTween = gsap.to(preview, {
-        opacity: 0,
-        y: 10,
-        duration: 0.25,
-        ease: "power2.in"
-      });
+      activeTween = gsap.to(preview, { opacity: 0, y: 10, duration: 0.25, ease: "power2.in" });
     });
   });
-});
+})();
 
-/* ==============================
-   MAGNETIC CTA BUTTONS
-================================ */
+// ========================================
+// MAGNETIC CTA BUTTONS
+// ========================================
+(function initCTA() {
+  if ("ontouchstart" in window) return;
 
-if (!("ontouchstart" in window)) {
-  gsap.utils.toArray(".cta-button").forEach((btn) => {
+  gsap.utils.toArray(".cta-button").forEach(btn => {
     const strength = 0.35;
 
-    btn.addEventListener("mouseenter", () => {
-      btn.classList.add("is-hovered");
-    });
+    btn.addEventListener("mouseenter", () => btn.classList.add("is-hovered"));
 
-    btn.addEventListener("mousemove", (e) => {
+    btn.addEventListener("mousemove", e => {
       const rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
 
-      // Magnetic pull
-      gsap.to(btn, {
-        x: x * strength,
-        y: y * strength,
-        duration: 0.4,
-        ease: "power3.out"
-      });
+      gsap.to(btn, { x: x * strength, y: y * strength, duration: 0.4, ease: "power3.out" });
 
-      // Glow follows cursor
       btn.style.setProperty("--x", `${((e.clientX - rect.left) / rect.width) * 100}%`);
       btn.style.setProperty("--y", `${((e.clientY - rect.top) / rect.height) * 100}%`);
     });
 
     btn.addEventListener("mouseleave", () => {
       btn.classList.remove("is-hovered");
-
-      // Soft elastic release
-      gsap.to(btn, {
-        x: 0,
-        y: 0,
-        duration: 0.8,
-        ease: "elastic.out(1, 0.4)"
-      });
+      gsap.to(btn, { x: 0, y: 0, duration: 0.8, ease: "elastic.out(1, 0.4)" });
     });
   });
-}
+})();
+
+// ========================================
+// FORM HANDLING & TOAST
+// ========================================
+(function initForm() {
+  const form = document.getElementById('enquiryForm');
+  const toast = document.getElementById('toast');
+  if (!form || !toast) return;
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const formData = {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      service: document.getElementById('service').value,
+      message: document.getElementById('message').value
+    };
+
+    toast.classList.add('show');
+
+    const msg = `*New Enquiry*%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Service:* ${formData.service}%0A*Message:* ${formData.message}`;
+
+    setTimeout(() => {
+      window.open(`https://wa.me/919677079693?text=${msg}`, '_blank');
+      toast.classList.remove('show');
+      form.reset();
+    }, 2000);
+  });
+})();
+
+// ========================================
+// TRACKING WIDGET INTERACTION
+// ========================================
+(function initTracking() {
+    const trackBtn = document.querySelector('.tracking-btn');
+    if(trackBtn) {
+        trackBtn.addEventListener('click', () => {
+            const input = document.querySelector('.tracking-input');
+            const id = input.value.trim();
+            if(!id) {
+                input.style.borderColor = 'red';
+                setTimeout(() => input.style.borderColor = 'var(--color-border)', 2000);
+                return;
+            }
+            // Simulate search
+            trackBtn.innerHTML = 'Searching...';
+            setTimeout(() => {
+                alert(`Tracking info for ${id}: In Transit (Chennai -> Bangalore)`);
+                trackBtn.innerHTML = 'Track';
+            }, 1500);
+        });
+    }
+})();
+
+document.getElementById('calc-btn').addEventListener('click', () => {
+    const l = parseFloat(document.getElementById('calc-l').value) || 0;
+    const w = parseFloat(document.getElementById('calc-w').value) || 0;
+    const h = parseFloat(document.getElementById('calc-h').value) || 0;
+    const q = parseFloat(document.getElementById('calc-q').value) || 1;
+
+    if (l && w && h) {
+        const cbm = ((l * w * h) / 1000000) * q;
+        const resultDiv = document.getElementById('calc-result');
+        resultDiv.querySelector('span').innerText = cbm.toFixed(3);
+        resultDiv.classList.remove('hidden');
+        setTimeout(() => resultDiv.classList.add('show'), 10);
+    }
+});
+
+// Text Scramble Effect
+const letters = "ABCDEFGHIJKLMNOPQRS";
+
+document.querySelectorAll(".section-title").forEach(target => {
+    target.onmouseover = event => {
+        let iteration = 0;
+        const originalText = event.target.dataset.value || event.target.innerText;
+        
+        if(!event.target.dataset.value) event.target.dataset.value = originalText;
+
+        clearInterval(event.target.interval);
+
+        event.target.interval = setInterval(() => {
+            event.target.innerText = originalText
+                .split("")
+                .map((letter, index) => {
+                    if(index < iteration) {
+                        return originalText[index];
+                    }
+                    return letters[Math.floor(Math.random() * 20)];
+                })
+                .join("");
+
+            if(iteration >= originalText.length){ 
+                clearInterval(event.target.interval);
+            }
+
+            iteration += 1 / 3;
+        }, 30);
+    }
+});
+
+// =============================
+// EXIT INTENT POPUP
+// =============================
+(function() {
+    const popup = document.getElementById('exit-popup');
+    const closeBtn = document.querySelector('.close-popup');
+    let popupShown = false;
+
+    if (!popup || !closeBtn) return; // Safety check
+
+    // Listen for mouse leaving viewport from top
+    document.addEventListener('mouseout', (e) => {
+        // Only trigger if moving out from top and popup not shown
+        if (!popupShown && e.clientY <= 0) {
+            popup.classList.add('active');
+            popupShown = true;
+        }
+    });
+
+    // Close button
+    closeBtn.addEventListener('click', () => {
+        popup.classList.remove('active');
+    });
+
+    // Optional: Close on clicking outside the popup
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) popup.classList.remove('active');
+    });
+})();
